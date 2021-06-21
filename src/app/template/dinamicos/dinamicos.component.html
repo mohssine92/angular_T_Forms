@@ -1,0 +1,91 @@
+<h2>Template: <small> Dinámicos </small></h2>
+<hr>
+
+
+<form (ngSubmit)="guardar()" autocomplete="off" #miFormulario="ngForm"> <!-- se dispara depende de enter tecla solamente , no button porque no es submit -->
+                                                <!-- primero referencia local a mi formulario , aunque no la recibo en classComponent -->
+    <!-- Nombre -->
+    <div class="mb-3 row">
+        <label class="col-sm-3 col-form-label">Nombre</label>
+        <div class="col-sm-9">
+            <input class="form-control"
+                   placeholder="Nombre de la persona"
+                   [ngModel]="persona.nombre"
+                   name="nombre"
+                   required> <!-- en este input he asociado ngModel con llaves cuadradas - no con cajas de bananas () . porque no quiero que emita el campo - lo voy a manejar con el formulario -->
+                <span class="form-text text-danger"
+                        *ngIf="miFormulario.controls.nombre?.errors && miFormulario.controls.nombre?.touched">
+                   Este campo es obligatorio
+               </span>
+        </div>
+    </div>
+
+    <!-- Agregar Favorito -->
+    <div class="mb-3 row">
+        <label class="col-sm-3 col-form-label">Agregar</label>
+        <div class="col-sm-9">
+
+            <div class="input-group">
+                <input class="form-control"
+                       placeholder="Agregar favorito"
+                       [(ngModel)]="nuevoJuego"
+                       (keyup.enter)="agregarJuego()"
+                       name="nuevoJuego"
+                       >
+
+                <button class="btn btn-outline-primary"
+                        type="button"
+                        (click)="agregarJuego()"
+                       >
+                    Agregar
+                </button>
+            </div> <!-- este input se dispara depende de dos eventos - click al button - y - tecla enter en dicho input   -->
+        </div>
+    </div>
+
+
+    <!-- Lista de Juegos Favoritos -->
+    <div class="mb-3 row">
+        <label class="col-sm-3 col-form-label">Favoritos</label>
+        <div class="col-sm-9">
+
+            <div class="input-group mb-1"
+                 *ngFor="let juego of persona.favoritos; let i = index"> <!-- duplicar elemento html basado en un acoleccion -->
+
+                <input [(ngModel)]="juego.nombre"
+                       name="favorito_{{ i }}"
+                       class="form-control"
+                       required> <!-- alternativa [name]=" 'favorito' + i  "  --> <!-- ngModel entre () emite cambios a la prop asociada mas que se establece -->
+
+                <button class="btn btn-outline-danger"
+                        type="button"
+                        (click)="eliminar(i)"> <!-- se trata de una coleccion de any , siempre es facil usar index como referencia para eleminar -->
+                   Eliminar
+               </button>
+
+            </div>
+
+        </div>
+    </div>
+
+
+
+    <div class="row">
+        <div class="col-sm-12">
+            <button type="button"
+                    class="btn btn-primary float-end"
+                    [disabled]="miFormulario.invalid"
+                    (click)="guardar()"> <!-- referencia al for es obligatoria para disabled -->
+                Guardar
+            </button>
+        </div>
+    </div>
+
+
+</form>
+
+
+
+
+<span>Persona</span>
+<pre>{{ persona | json }}</pre> <!-- uso de pipe -->

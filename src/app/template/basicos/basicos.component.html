@@ -1,0 +1,120 @@
+<h2>Template: Básicos</h2> <!-- este tipo de formulario la mayoria de logica lo hace angular por nosotros , la mayoria logica del formularios especificaciones de campos etc .. se encuentra en el template de html .
+                                 por eso se llma form template --> <!-- cuando trabajamos campos sensillos se aconsej a su uso -->
+<hr>
+
+
+<div class="row">
+  <div class="col">
+       <!-- donde esta la data de los campos ?? añadimos referencia local #miformetc... , enlace referencia del form a la variable asociada ngForm-->
+       <!--autocomplete="off" no sugerencia por default de html  -->
+      <form (ngSubmit)="guardar()"
+            #miFormulario="ngForm"
+            autocomplete="off">
+
+          <!-- Campo de producto -->
+          <div class="mb-3 row">
+
+              <label class="col-sm-3 col-form-label">Producto </label>
+
+              <div class="col-sm-9">
+                   <!-- ngModel : asi sin asociar a algun prop . es decir asignarle valor , se le v a asignar como valor string vacio  -->
+
+                  <input type="text"
+                         class="form-control"
+                         [ngModel]="initForm.producto"
+                         name="producto"
+                         placeholder="Nombre del producto"
+                         required
+                         minlength="3">
+
+                  <span class="form-text text-danger"
+                        *ngIf="nombreValido()">
+                      Debe de ser de 3 letras   <!-- {{ initForm.producto }}  [(ngModel)]="initForm.producto"  twodatabinding-->  <!--  [ngModel]="initForm.producto" -->
+                  </span>
+              </div>
+
+          </div>
+
+
+
+        <!-- Campo de precio -->
+        <div class="mb-3 row">
+
+            <label class="col-sm-3 col-form-label">Precio</label>
+            <div class="col-sm-9">
+                <input type="number"
+                       class="form-control"
+                       [ngModel]="initForm.precio"
+                       name="precio"
+                       placeholder="Precio del producto"
+                       required
+                       min="0">
+                <span class="form-text text-danger"
+                      *ngIf="precioValido()">
+
+                    El precio debe de ser 0 o mayor
+                </span>
+            </div>
+
+        </div>
+
+        <!-- Campo de existencias -->
+        <div class="mb-3 row">
+
+            <label class="col-sm-3 col-form-label">Existencias</label>
+            <div class="col-sm-9">
+                <input type="number"
+                       class="form-control"
+                       [ngModel]="initForm.existencias"
+                       name="existencias"
+                       customMin
+                       [minimo]="0"
+                       placeholder="Existencias del producto"
+                       required>
+            </div> <!-- customMin es mi directiva perzonalizada : asi puedo extender las funcionalidades que puede recibir el input y asi puedo controllar el input
+                        es deccir cuando se ejecute este componente se va a ejecutar la directiva , este cutomMin le va extender al input este attribute : [minimo]
+                       [minimo]="0" : recibe zero como number - no como string : porque estan los lleves []
+                       tambien se puede mandar minimo='0' : asi se va como string - asi necesito conversor - ojo con esto  -->
+
+        </div>
+
+        <!-- button submit del formulario -->
+        <div class="row">
+            <div class="col">
+                <button type="submit"
+                        [disabled]="miFormulario.invalid"
+                        class="btn btn-primary float-end">
+                    Guardar
+                </button> <!-- no deberia permitir el posteo a menos que este todo correcto , es este caso manipulamos asi : si el form no es valido el button sera disabled -->
+            </div>  <!-- es [disabled] es un attribute del button se activa cuando cumpla con .... cuando mi form invalido respeto a a las validaciones dadas -->
+        </div>
+
+
+
+      </form>
+
+  </div>
+</div>
+
+
+<div class="row"> <!-- Referencia local al formulario : gracias a referencia local obtenemos propiedades del formulario en este caso / prpiedades son : objetos , metodos , etc ... -->
+  <div class="col">
+
+      <span>Valid : validar estado del formulario , como es required debe tener valores para responder con true</span>
+      <pre>{{ miFormulario.valid }}</pre> <!-- no va ser true hasta que cumpla con las valifaciones -->
+
+      <span>Pristine</span>
+      <pre>{{ miFormulario.pristine }}</pre> <!-- Pristine : true segnifica no se ha cambiado estado incial del formulario entero -->
+
+      <span>Touched</span>
+      <pre>{{ miFormulario.touched }}</pre> <!-- segnifica que el user ha tocado el formulario - ha tovado y salio sin cambiar nada  -->
+
+      <span>Value</span> <!-- noten al escribir se sale aqui imediato , es por referencia al elemento form asi tengo todo acceso .... -->
+      <pre>{{ miFormulario.value | json }}</pre> <!-- uso de pipe -->
+
+      <span>CustomDirective</span>
+      <pre>{{ miFormulario.controls.existencias?.errors | json }}</pre> <!-- existencias es nombre del input -->
+
+  </div>
+</div>
+
