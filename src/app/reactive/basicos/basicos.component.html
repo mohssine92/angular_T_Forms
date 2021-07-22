@@ -1,2 +1,100 @@
-<p>basicos works!</p> <!-- la parte de formularios rectivos :  se basa en que html sea lo mas basico possible ,  y todo el trabajo duro lo tendremos en el componente de ts   -->
-                      <!-- se aconseja su uso al trabajar con aproximacion . tenemos mas control -->
+<h2>Reactivos: Básicos</h2> <!-- la parte de formularios rectivos :  se basa en que html sea lo mas basico possible ,  y todo el trabajo duro lo tendremos en el componente de ts   -->
+
+<hr>
+
+<div class="row">
+    <div class="col">
+
+        <form (ngSubmit)="guardar()" autocomplete="off" [formGroup]="miFormulario" > <!--[formGroup] es la manera de asignar prop de nuestro component al formulario Reactivo   -->
+
+            <!-- Campo de producto -->
+            <div class="mb-3 row">
+                <label class="col-sm-3 col-form-label">Producto</label>
+                <div class="col-sm-9">
+
+                    <input type="text"
+                           class="form-control"
+                           formControlName="nombre"
+                           placeholder="Nombre del producto"> <!--formControlName="nombre" : es similar a [()] : escucha y emission a manipular valor de la prop asociada de nuestro component-->
+
+                    <span class="form-text text-danger"
+                          *ngIf="campoEsValido('nombre')"> <!-- mostrar de manera condicional  --> <!-- alternativa : V:250 - nota:validacion correcta- -->
+                        Debe de ser de 3 letras
+                    </span>
+                </div>
+            </div>
+
+            <!-- Campo de producto -->
+            <div class="mb-3 row">
+                <label class="col-sm-3 col-form-label">Precio</label>
+                <div class="col-sm-9">
+                    <input type="number"
+                           class="form-control"
+                           formControlName="precio"
+                           placeholder="Precio del producto">
+                    <span class="form-text text-danger"
+                          *ngIf="campoEsValido('precio')"> <!-- siempre nombre del input/control : porque a partir de la referencia al form verificamo dicho control si tiene algun err acumulado en tsclass -->
+                        El precio debe de ser 0 o mayor
+                    </span>
+                </div>
+            </div>
+
+            <!-- Campo de existencias -->
+            <div class="mb-3 row">
+                <label class="col-sm-3 col-form-label">Existencias</label>
+                <div class="col-sm-9">
+                    <input type="number"
+                           class="form-control"
+                           formControlName="existencias"
+                           placeholder="Existencias del producto">
+
+                    <span class="form-text text-danger"
+                           *ngIf="campoEsValido('existencias')">
+                         Las existencias deben de ser 0 o mayor
+                    </span>
+                </div>
+            </div>
+
+
+            <div class="row">
+                <div class="col">
+                    <button type="submit"
+                            class="btn btn-primary float-end"
+                            >
+                        Guardar
+                    </button>  <!-- [disabled]="miFormulario.invalid" -->
+                </div> <!-- como este buton de typo Submit - Realmente estara disparando el submit del formulario -->
+            </div>
+
+
+
+        </form>
+
+    </div>
+</div>
+
+
+
+
+<div class="row">
+    <div class="col">
+
+        <span>Valid</span> <!-- referencia al formulario  -->
+        <pre>{{ miFormulario.valid }}</pre>
+
+        <span>Pristine</span> <!-- prestine false - segnifica input Control modificado su valor inicial  -->
+        <pre>{{ miFormulario.pristine }}</pre>
+
+        <span>Touched</span> <!-- em true , cuado doy click en control input y salgo  -->
+        <pre>{{ miFormulario.touched }}</pre>
+
+        <span>Value</span>
+        <pre>{{ miFormulario.value | json }}</pre>
+
+        <span>Precio</span>
+        <pre>{{ miFormulario.controls.precio.errors | json }}</pre>
+
+        <!-- directiva perzonalizada para validacion - no la voy a necesitar en forms reactivos -->
+    </div>
+</div>
+

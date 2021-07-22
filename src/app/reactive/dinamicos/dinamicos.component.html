@@ -1,1 +1,97 @@
-<p>dinamicos works!</p>
+
+<h2>Reactivos: <small> Dinámicos </small></h2>
+<hr>
+
+<form autocomplete="off" [formGroup]="miFormulario" (ngSubmit)="guardar()">  <!-- para dispararse requiere button de tipo submit -->
+
+    <!-- Nombre -->
+    <div class="mb-3 row">
+        <label class="col-sm-3 col-form-label">Nombre</label>
+        <div class="col-sm-9">
+            <input class="form-control"
+                   formControlName="nombre"
+                   placeholder="Nombre de la persona"> <!-- formControlName = enlazar - asociar -->
+            <span class="form-text text-danger"
+                    *ngIf="campoEsValido('nombre')">
+                    Este campo es obligatorio
+            </span>
+        </div>
+    </div>
+
+    <!-- Agregar Favorito -->
+    <div class="mb-3 row">
+        <label class="col-sm-3 col-form-label">Agregar</label>
+        <div class="col-sm-9">
+
+            <div class="input-group">
+
+                <input class="form-control"
+                       [formControl]="nuevoFavorito"
+                       placeholder="Agregar favorito"
+                       (keyup.enter)="agregarFavorito()"> <!-- este input consta de un control aparte - no puedo con cajas de bannas : estoy usando form Reactive : no ngForm    -->
+                <button class="btn btn-outline-primary"
+                        type="button"
+                        (click)="agregarFavorito()">
+                    Agregar
+                </button>
+
+            </div> <!-- NB : formControlName : para enlazar control del input interno del Form ,   [formControl] : control del input interno del form independiente -->
+        </div>
+    </div>
+
+
+    <!-- Lista de Juegos Favoritos -->
+    <div class="mb-3 row">
+
+        <label class="col-sm-3 col-form-label">Favoritos</label>
+
+        <div class="col-sm-9" formArrayName="favoritos"> <!-- favoritos es un arreglo de inputs asociado al la prop favoritos en el preparacion del formulario : asi en los elementos hijos html se trabaja input dinamico que es array -->
+
+          <div class="input-group mb-1"
+               *ngFor="let favorito of favoritosArr.controls; let i = index"> <!-- este es el div a barrer  --> <!-- favoritosArr : prop getters -->
+
+                <input class="form-control"
+                       [formControlName]="i"> <!-- valor del input es el valor de los indixes del array : preparado en el formulario  -->
+
+
+                <button class="btn btn-outline-danger"
+                        type="button"
+                        (click)="borrar(i)">
+                   Eliminar
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+
+    <div class="row">
+        <div class="col-sm-12">
+            <button type="button"
+                    class="btn btn-primary float-end"
+                    (click)="guardar()"> <!-- puesto que no es de tipo submit dispara su funcion por dependecia de evento click  -->
+                Guardar
+            </button> <!-- en caso de form invalid no deberia deshabilitar button - deberia cortar el proceso en la funcion de guardar con return  -->
+        </div>
+    </div>
+
+
+</form>
+
+
+
+<span>Valid</span>
+<pre>{{ miFormulario.valid }}</pre>
+<br>
+
+<span>Value</span>
+<pre>{{ miFormulario.value | json }}</pre>
+<br>
+
+<span>Agregar Juego</span>
+<pre>{{ nuevoFavorito.valid }}</pre>
+<pre>{{ nuevoFavorito.value }}</pre>
+

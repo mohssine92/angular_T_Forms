@@ -15,7 +15,7 @@ const routes: Routes = [
   },
   {
     path: '**',
-    redirectTo: 'template'
+    redirectTo: 'template' // decidir que trayectoria toma para la carga de ruta por default
   }
 
 ];
