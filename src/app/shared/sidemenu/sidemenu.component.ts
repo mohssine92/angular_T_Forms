@@ -52,6 +52,17 @@ export class SidemenuComponent  { // vasicamente este componente creado para pod
        },
      ];
 
+     authMenu: MenuItem[] = [
+      {
+        texto: 'Registro',
+        ruta: './auth/registro'
+      },
+      {
+        texto: 'Login',
+        ruta: './auth/login'
+      },
+    ]
+
 
 }
 // ng g c shared/sidemenu --skip-tests -is

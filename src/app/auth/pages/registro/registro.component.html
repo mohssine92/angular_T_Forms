@@ -1,0 +1,134 @@
+<h2>Validaciones Reactivas</h2>
+<hr>
+<div class="row">
+  <div class="col">
+
+      <form  autocomplete="off"
+             [formGroup]="miFormulario"
+             (ngSubmit)="submitFormulario()"
+            > <!--  [formGroup]="miFormulario" asociacion del form html : a la logica form Reactivo  -->
+
+
+          <!-- Nombre -->
+          <div class="row mb-3">
+              <label class="col-sm-3 col-form-label">Nombre</label>
+              <div class="col-sm-9">
+                  <input type="text"
+                         class="form-control"
+                         formControlName="nombre"
+                         placeholder="Nombre del usuario"> <!-- validacion cobtra expresion regular -->  <!--  formControlName="nombre" asociacion del input html : a la logica form Reactivo  -->
+
+                 <span class="form-text text-danger"
+                       *ngIf="campoNoValido('nombre')"
+                       > <!-- la excepcion del input nombre -->
+                      Debe de ser en formato de nombre y apellido
+                </span>
+              </div>
+          </div>
+
+          <!-- Email -->
+            <div class="row mb-3">
+              <label class="col-sm-3 col-form-label">Email</label>
+              <div class="col-sm-9">
+                <!-- sera buano poner tipo email : porque en selular , asi al seleccionar este campo : teclado se va a cambiar mostrar @ -->
+                <input type="email"
+                         class="form-control"
+                         formControlName="email"
+                         placeholder="Email del usuario"> <!-- email va ser una validacion asycrona -->
+                  <span class="form-text text-danger"
+                         *ngIf="campoNoValido('email')">
+                         {{ emailErrorMsg }}
+                         <!-- va ser una prop computada , mostrar mensaje de err de forma dinamica : este campo puede sufrir invalidez por varios razones  -->
+                  </span>
+              </div>
+          </div>
+
+          <!-- Username -->
+          <div class="row mb-3">
+            <label class="col-sm-3 col-form-label">Username</label>
+            <div class="col-sm-9">
+                <input type="text"
+                       class="form-control"
+                       formControlName="username"
+                       placeholder="Nombre código del usuario">
+                <span class="form-text text-danger"
+                       *ngIf="campoNoValido('username')">
+                     El username no puede ser Strider
+                </span>
+            </div>
+        </div>
+
+        <!-- Password -->
+      <div class="row mb-3">
+          <label class="col-sm-3 col-form-label">Password</label>
+          <div class="col-sm-9">
+              <input type="password"
+                     class="form-control"
+                     formControlName="password"
+                     placeholder="Password de su cuenta">
+
+              <span class="form-text text-danger"
+                     *ngIf="campoNoValido('password')">
+                   La contraseña debe de ser mayor de 6 caracteres.
+              </span>
+          </div>
+      </div>
+
+      <!-- Password2 -->
+      <div class="row mb-3">
+            <label class="col-sm-3 col-form-label">Confirmar</label>
+            <div class="col-sm-9">
+                <input type="password"
+                       class="form-control"
+                       formControlName="password2"
+                       placeholder="Confirmar la contraseña">
+
+                <span class="form-text text-danger"
+                       *ngIf="campoNoValido('password2')">
+                     Las contraseñas deben de ser iguales
+                </span>
+            </div>
+      </div>
+
+
+          <div class="row">
+              <div class="col">
+                  <button class="btn btn-primary float-end"
+                          [disabled]="miFormulario.pending"
+                          type="submit"> <!-- pendinig es el estado del form cuando los campos estan en proceso de validacion : lo bloqueamos en caso tardo validacion contra un campo usando servicio Dominio de back puede tardar
+                                              pues de toda forma se la valifdacion termina y produzca err no se va postear   -->
+                      Crear
+                  </button>
+              </div>
+          </div>
+
+
+      </form>
+  </div>
+</div>
+
+
+<h2>Form Valid: {{ miFormulario.valid }}</h2> <!-- Objetivo es el form no valla ser valido si alguna de estos validaacion personalizadas , o asicrona no se harespondido o cumplido    -->
+<h2>Form Status: 3 status have  {{ miFormulario.status }}</h2>
+<h2>Form Pending: {{ miFormulario.pending }}</h2>
+
+
+<h2>Form errors</h2>
+<pre>{{ miFormulario.errors | json }}</pre>
+
+<h5>Nombre</h5>
+<pre>{{ miFormulario.controls.nombre.errors | json }}</pre> <!-- pinta null : segnifica ha cumplido  , true :segnifica debe cumplir -->
+
+- <h5>Email</h5>
+<pre>{{ miFormulario.controls.email.errors | json }}</pre>
+
+<h5>Username</h5>
+<pre>{{ miFormulario.controls.username.errors | json }}</pre>
+
+
+<h5>Password</h5>
+<pre>{{ miFormulario.controls.password.errors | json }}</pre>
+
+<h5>Confirmar</h5>
+<pre>{{ miFormulario.controls.password2.errors | json }}</pre>
+
